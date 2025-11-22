@@ -4,6 +4,8 @@ const words = [
   { text: 'Apple', breakdown: 'Ap - ple' },
   { text: 'Ball', breakdown: 'Ball' }
 ];
+// insert aszure API call here
+
 
 let idx = 0;
 let durations = new Array(words.length).fill(0); // milliseconds per word
