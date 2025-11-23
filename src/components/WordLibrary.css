@@ -220,6 +220,9 @@
 .word-card-footer {
   padding-top: 1rem;
   border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .view-details {
@@ -227,6 +230,43 @@
   color: var(--accent-terracotta);
   font-weight: 500;
   font-style: italic;
+}
+
+.word-card-delete-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: url('/Paw-cursor.png') 16 16, pointer;
+  color: var(--brown-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.word-card:hover .word-card-delete-btn {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: scale(1) !important;
+  pointer-events: auto !important;
+}
+
+.word-card-delete-btn:hover {
+  background: var(--beige);
+  color: var(--danger);
+  transform: scale(1.1) !important;
+}
+
+.word-card-delete-btn svg {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 
 .empty-library {
