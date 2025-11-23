@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import AddWordsModal from './AddWordsModal'
+import ConfirmModal from './ConfirmModal'
 import { Icons } from '../utils/icons'
 import './WordLibrary.css'
 
 function WordLibrary({ wordData, onWordClick, child, onAddWord, onDeleteWord }) {
   const [filter, setFilter] = useState('all')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState({ isOpen: false, wordText: null })
 
   const filters = [
     { id: 'all', label: 'All', count: wordData.length },
@@ -105,11 +107,25 @@ function WordLibrary({ wordData, onWordClick, child, onAddWord, onDeleteWord }) 
                 )}
               </div>
 
-              {onWordClick && (
-                <div className="word-card-footer">
+              <div className="word-card-footer">
+                {onWordClick && (
                   <span className="view-details">View Details →</span>
-                </div>
-              )}
+                )}
+                {onDeleteWord && (
+                  <button
+                    className="word-card-delete-btn"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setConfirmDelete({ isOpen: true, wordText: word.text })
+                    }}
+                    aria-label={`Delete ${word.text}`}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                  </button>
+                )}
+              </div>
             </div>
           )
         })}
@@ -129,6 +145,21 @@ function WordLibrary({ wordData, onWordClick, child, onAddWord, onDeleteWord }) 
         onDeleteWord={onDeleteWord}
         wordData={wordData}
         child={child}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={confirmDelete.isOpen}
+        onClose={() => setConfirmDelete({ isOpen: false, wordText: null })}
+        onConfirm={() => {
+          if (confirmDelete.wordText && onDeleteWord) {
+            onDeleteWord(confirmDelete.wordText)
+          }
+        }}
+        title="Delete Word"
+        message={`Are you sure you want to delete "${confirmDelete.wordText}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
       />
     </div>
   )
